@@ -1,0 +1,27 @@
+body {
+  font-family: monospace;
+  background: #282e2e;
+  color: antiquewhite;
+}
+
+a {
+  color: #18eef5;
+}
+
+#add-new-show-link {
+  font-size: large;
+  color: violet;
+}
+
+#welcome-user-msg, #login-or-sign-up {
+  position: absolute;
+  right: 0px;
+  padding-right: 10px;
+}
+
+.error {
+  background-color: #b73f08;
+  border-radius: 5px;
+  padding: 2px;
+  margin: 2px;
+}
