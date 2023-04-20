@@ -18,8 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('lmn.urls')),
-    
+    path('', include('lmn.urls')),    
 ]
 
 from django.conf import settings
