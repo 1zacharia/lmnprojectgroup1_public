@@ -1,4 +1,5 @@
 db.sqlite3
+media/*
 
 # python-related
 __pycache__
@@ -11,3 +12,4 @@ __pycache__
 # ignore virtual enviroments 
 venv
 env
+
