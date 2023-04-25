@@ -10,7 +10,7 @@
   <p id="note-text">{{ note.text }}</p>
 
   {% if note.photo %}
-    <img src="{{note.photo.url}}" alt="">
+    <img src="{{note.photo.url}}" alt="User uploaded image for artist {{ note.show.artist }} at venue {{ note.show.venue }} on {{ note.show.show_date }}">
   {% else %}
     <p>No Photo</p>
   {% endif %}
