@@ -55,6 +55,7 @@ class Note(models.Model):
     # Validation from: https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
     rating = models.IntegerField(
         blank=True,
+        default=1,
         validators=[
             MaxValueValidator(5),
             MinValueValidator(1)
