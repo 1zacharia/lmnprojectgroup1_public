@@ -31,5 +31,41 @@
       "text":"woo hoo!",
       "posted_date":"2018-02-14T14:15:00-06:00"
     }
+  },
+  {
+    "model":"lmn.note",
+    "pk":4,
+    "fields":{
+      "show":"2",
+      "user":"2",
+      "title":"super",
+      "text":"woo hoo!",
+      "posted_date":"2018-02-14T14:15:00-06:00",
+      "rating":"4"
+    }
+  },
+  {
+    "model":"lmn.note",
+    "pk":5,
+    "fields":{
+      "show":"2",
+      "user":"2",
+      "title":"super",
+      "text":"woo hoo!",
+      "posted_date":"2018-02-14T14:15:00-06:00",
+      "rating":"0"
+    }
+  },
+  {
+    "model":"lmn.note",
+    "pk":6,
+    "fields":{
+      "show":"2",
+      "user":"2",
+      "title":"super",
+      "text":"woo hoo!",
+      "posted_date":"2018-02-14T14:15:00-06:00",
+      "rating":"6"
+    }
   }
 ]

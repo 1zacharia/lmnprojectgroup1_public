@@ -20,3 +20,14 @@ class TestUser(TestCase):
         user2 = User(username='bob', email='bob@bob.com', first_name='bob', last_name='bob')
         with self.assertRaises(IntegrityError):
             user2.save()
+
+
+class TestNote(TestCase):
+
+    fixtures = ['testing_notes']
+    
+    # Test rating below minimum invalid
+
+    # Test rating above maximum invalid
+
+    # Test valid rating
