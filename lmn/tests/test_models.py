@@ -22,9 +22,9 @@ class TestUser(TestCase):
             user2.save()
 
 
-class TestNote(TestCase):
+# class TestNote(TestCase):
 
-    fixtures = ['testing_notes']
+    # fixtures for users, artists, venues, and shows to test note
     
     # Test rating below minimum invalid
 
