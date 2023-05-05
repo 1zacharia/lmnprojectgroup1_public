@@ -54,7 +54,7 @@ class Note(models.Model):
 
     def save(self, *args, **kwargs):
         old_note = Note.objects.filter(pk=self.pk).first()
-        if old_note and note.photo:
+        if old_note and self.photo:
             if old_note.photo != self.photo:
                 self.delete_photo(old_note.photo)
         super().save(*args, **kwargs)
