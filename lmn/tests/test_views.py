@@ -11,6 +11,10 @@ from datetime import timezone
 from lmn.models import Note
 from django.contrib.auth.models import User
 
+import os
+from PIL import Image
+import tempfile
+import filecmp
 
 class TestHomePage(TestCase):
 
@@ -530,3 +534,55 @@ class TestErrorViews(TestCase):
         # their profiles, or do other activities when it must be verified that the 
         # correct user is signed in (else 403) then this test can be written.
         pass 
+
+class TestNoteWithImage(TestCase):
+
+    fixtures = ['testing_users', 'testing_artists', 'testing_venues', 'testing_shows'] 
+    def setUp(self):
+        user = User.objects.get(pk=1)
+        self.client.force_login(user)
+        self.MEDIA_ROOT = tempfile.mkdtemp()
+        
+
+    def create_temp_image_file(self):
+        handle, tmp_img_file = tempfile.mkstemp(suffix='.jpg')
+        img = Image.new('RGB', (10, 10) )
+        img.save(tmp_img_file, format='JPEG')
+        return tmp_img_file
+
+    def test_add_note_with_photo_database_updated_correctly(self):
+        logged_in_user = User.objects.get(pk=2)
+        self.client.force_login(logged_in_user)  # bob
+
+        initial_note_count = Note.objects.count()
+        new_note_url = reverse('new_note', kwargs={'show_pk': 1})
+        tmp_img_file_path = self.create_temp_image_file()
+        with self.settings(MEDIA_ROOT=self.MEDIA_ROOT):
+            with open(tmp_img_file_path, 'rb') as img_file:
+                
+                response = self.client.post(
+                    new_note_url, 
+                    {'text': 'ok', 'title': 'blah blah', 'photo':img_file}, 
+                    follow=True)
+
+                # Verify note is in database
+                new_note_query = Note.objects.filter(text='ok', title='blah blah')
+                self.assertEqual(new_note_query.count(), 1)
+
+                # And one more note in DB than before
+                self.assertEqual(Note.objects.count(), initial_note_count + 1)
+
+                # Date correct?
+                now = datetime.datetime.today()
+                posted_date = new_note_query.first().posted_date
+                self.assertEqual(now.date(), posted_date.date())  # TODO check time too
+
+                tmp_img_file_name = os.path.basename(tmp_img_file_path)
+
+                expected_uploaded_file_path = os.path.join(self.MEDIA_ROOT, 'notes_images', tmp_img_file_name)
+
+                # Does the photo exist in the note?
+                self.assertTrue(os.path.exists(expected_uploaded_file_path))
+                self.assertIsNotNone(new_note_query.first().photo)
+                self.assertTrue(filecmp.cmp(tmp_img_file_path, expected_uploaded_file_path))
+                

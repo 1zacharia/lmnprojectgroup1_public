@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.files.storage import default_storage
+
 # Import validator to limit rating to 1-5 (cite at Note model)
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -50,6 +52,24 @@ class Note(models.Model):
     title = models.CharField(max_length=200, blank=False)
     text = models.TextField(max_length=1000, blank=False)
     posted_date = models.DateTimeField(auto_now_add=True, blank=False)
+    photo = models.ImageField(upload_to='notes_images/', blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        old_note = Note.objects.filter(pk=self.pk).first()
+        if old_note and self.photo:
+            if old_note.photo != self.photo:
+                self.delete_photo(old_note.photo)
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.photo:
+            self.delete_photo(self.photo)
+        
+        super().delete(*args, **kwargs)
+
+    def delete_photo(self, photo):
+        if default_storage.exists(photo.name):
+            default_storage.delete(photo.name)
 
     # Rating (1-5) for the user to rate a show
     # Validation from: https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
@@ -63,5 +83,5 @@ class Note(models.Model):
     )
 
     def __str__(self):
-        return f'User: {self.user} Show: {self.show} Note title: {self.title} \
-        Text: {self.text} Posted on: {self.posted_date} Rating: {self.rating}'
+        photo_str = self.photo.url if self.photo else 'No Photo'
+        return f'User: {self.user} Show: {self.show} Note title: {self.title} Text: {self.text} Posted on: {self.posted_date} Photo: {photo_str} Rating: {self.rating}'
