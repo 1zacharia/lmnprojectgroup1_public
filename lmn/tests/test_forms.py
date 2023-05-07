@@ -50,6 +50,23 @@ class NewNoteFormTests(TestCase):
         form = NewNoteForm(form_data)
         self.assertTrue(form.is_valid())
 
+    """ Test the rating in the NewNoteForm. A valid rating is 1-5 """
+    def test_rating_of_less_than_one_is_invalid(self):
+        form_data = {'title': 'title', 'text': 'text', 'rating': 0}
+        form = NewNoteForm(form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_rating_of_greater_than_five_is_invalid(self):
+        form_data = {'title': 'title', 'text': 'text', 'rating': 6}
+        form = NewNoteForm(form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_rating_from_one_to_five_is_valid(self):
+        for valid_rating in range(1, 6):
+            form_data = {'title': 'title', 'text': 'text', 'rating': valid_rating}
+            form = NewNoteForm(form_data)
+            self.assertTrue(form.is_valid())
+
 
 class RegistrationFormTests(TestCase):
 

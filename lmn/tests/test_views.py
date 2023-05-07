@@ -366,12 +366,13 @@ class TestAddNotesWhenUserLoggedIn(TestCase):
         new_note_url = reverse('new_note', kwargs={'show_pk': 1})
         response = self.client.post(
             new_note_url, 
-            {'text': 'ok', 'title': 'blah blah'}, 
+            {'text': 'ok', 'title': 'blah blah', 'rating': '4'}, 
             follow=True)
 
         new_note = Note.objects.filter(text='ok', title='blah blah').first()
 
         self.assertRedirects(response, reverse('note_detail', kwargs={'note_pk': new_note.pk}))
+        self.assertContains(response, 'Rating: 4/5')
 
 
 class TestUserProfile(TestCase):
@@ -406,6 +407,15 @@ class TestUserProfile(TestCase):
 
         response = self.client.get(reverse('user_profile', kwargs={'user_pk': 2}))
         self.assertContains(response, 'bob\'s notes')
+
+    def test_ratings_are_shown_on_profile_page(self):
+        # A string "Rating: #/5" is visible
+        response = self.client.get(reverse('user_profile', kwargs={'user_pk': 1}))
+        self.assertContains(response, 'Rating: 2/5')
+
+        response = self.client.get(reverse('user_profile', kwargs={'user_pk': 2}))
+        self.assertContains(response, 'Rating: 3/5')
+        self.assertContains(response, 'Rating: 4/5')
 
     def test_correct_user_name_shown_different_profiles(self):
         logged_in_user = User.objects.get(pk=2)

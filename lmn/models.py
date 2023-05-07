@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.files.storage import default_storage
 
+# Import validator to limit rating to 1-5 (cite at Note model)
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Remember that every model gets a primary key field by default.
 
@@ -69,7 +71,17 @@ class Note(models.Model):
         if default_storage.exists(photo.name):
             default_storage.delete(photo.name)
 
+    # Rating (1-5) for the user to rate a show
+    # Validation from: https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
+    rating = models.IntegerField(
+        blank=True,
+        default=1,
+        validators=[
+            MaxValueValidator(5),
+            MinValueValidator(1)
+        ]
+    )
+
     def __str__(self):
         photo_str = self.photo.url if self.photo else 'No Photo'
-        return f'User: {self.user} Show: {self.show} Note title: {self.title} \
-        Text: {self.text} Posted on: {self.posted_date} Photo: {photo_str}'
+        return f'User: {self.user} Show: {self.show} Note title: {self.title} Text: {self.text} Posted on: {self.posted_date} Photo: {photo_str} Rating: {self.rating}'
