@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+# Import validator to limit rating to 1-5 (cite at Note model)
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Remember that every model gets a primary key field by default.
 
@@ -49,6 +51,17 @@ class Note(models.Model):
     text = models.TextField(max_length=1000, blank=False)
     posted_date = models.DateTimeField(auto_now_add=True, blank=False)
 
+    # Rating (1-5) for the user to rate a show
+    # Validation from: https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
+    rating = models.IntegerField(
+        blank=True,
+        default=1,
+        validators=[
+            MaxValueValidator(5),
+            MinValueValidator(1)
+        ]
+    )
+
     def __str__(self):
         return f'User: {self.user} Show: {self.show} Note title: {self.title} \
-        Text: {self.text} Posted on: {self.posted_date}'
+        Text: {self.text} Posted on: {self.posted_date} Rating: {self.rating}'

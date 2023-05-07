@@ -23,6 +23,7 @@
 
       <p class="note-info">{{ note.show.artist.name }} at {{ note.show.venue.name }} on {{ note.show.show_date }}</p>
       <p class="note-text">{{ note.text|truncatechars:300 }}</p>
+      <p>Rating: {{ note.rating }}/5</p>
       <p class="note-posted-at">{{ note.posted_date }}</p>
     </div>
 

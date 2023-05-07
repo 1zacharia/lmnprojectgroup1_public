@@ -15,6 +15,10 @@
         <a class="user" href="{% url 'user_profile' user_pk=note.user.pk %}">{{ note.user.username }}</a>
       </p>
 
+      <p>Rating:
+        {{ note.rating }}/5
+      </p>
+
       <p class="note-text">{{ note.text|truncatechars:100 }}</p> 
 
       <a href="{% url 'note_detail' note_pk=note.pk %}">Note details</a>
