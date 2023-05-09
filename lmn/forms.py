@@ -1,5 +1,6 @@
 from django import forms
 from .models import Note
+import datetime
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -12,6 +13,10 @@ class VenueSearchForm(forms.Form):
 
 class ArtistSearchForm(forms.Form):
     search_name = forms.CharField(label='Artist Name', max_length=200)
+
+# Search form for notes
+class NoteSearchForm(forms.Form):
+    search_title = forms.CharField(label='Your note title', max_length=200)
 
 
 class NewNoteForm(forms.ModelForm):
@@ -70,3 +75,13 @@ class UserRegistrationForm(UserCreationForm):
             user.save()
 
         return user
+
+
+# Used https://www.youtube.com/watch?v=I2-JYxnSiB0 for this
+class DateTimeInputWidget(forms.DateTimeInput):
+    input_type= 'datetime-local'
+
+class ShowSearchForm(forms.Form):
+    datetime_range_start = forms.DateTimeField(label='Filter Start Date',required=False,widget=DateTimeInputWidget)
+    datetime_range_end = forms.DateTimeField(label='Filter End Date',required=False,widget=DateTimeInputWidget)
+    

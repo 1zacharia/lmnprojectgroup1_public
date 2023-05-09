@@ -1,7 +1,15 @@
 body {
   font-family: monospace;
-  background: #282e2e;
-  color: antiquewhite;
+  background-color: #036c6c;
+  color: rgb(208, 155, 85);
+}
+ 
+#site-header {
+  background: url('../img/stage.jpg') 0 0 repeat-x;
+  color: rgba(255, 255, 255, 0.633);
+  padding: 40px 0 40px 0px;
+  text-align: center;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 a {
@@ -10,7 +18,7 @@ a {
 
 #add-new-show-link {
   font-size: large;
-  color: violet;
+  color: rgb(199, 59, 199);
 }
 
 #welcome-user-msg, #login-or-sign-up {
@@ -20,8 +28,38 @@ a {
 }
 
 .error {
-  background-color: #b73f08;
+  background-color: #dd5212;
   border-radius: 5px;
   padding: 2px;
   margin: 2px;
 }
+
+/** Social Button CSS **/
+
+.share-btn {
+  display: inline-block;
+  color: #ffffff;
+  border: none;
+  padding: 0.1em 0.6em;
+  outline: none;
+  text-align: center;
+  font-size: 0.9em;
+  margin: 0 0.2em;
+}
+
+.share-btn:focus,
+.share-btn:hover {
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.share-btn:active {
+  color: #e2e2e2;
+}
+
+.share-btn.twitter     { background: #55acee; }
+.share-btn.facebook    { background: #3B5998; }
+.share-btn.reddit      { background: #ff5700; }
+.share-btn.hackernews  { background: #ff6600; }
+.share-btn.linkedin    { background: #4875B4; }
+.share-btn.email       { background: #444444; }

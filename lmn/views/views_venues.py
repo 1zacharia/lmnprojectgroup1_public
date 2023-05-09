@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 
 from ..models import Venue, Show
 from ..forms import VenueSearchForm
@@ -15,7 +16,9 @@ def venue_list(request):
 
     if search_name:
         # search for this venue, display results. Use case-insensitive contains
-        venues = Venue.objects.filter(name__icontains=search_name).order_by('name')
+        venues = Venue.objects.filter(Q(name__icontains=search_name) 
+                                      | Q(city__icontains=search_name) 
+                                      | Q(state__icontains=search_name)).order_by('name')
     else:
         venues = Venue.objects.all().order_by('name')   # TODO paginate results
 

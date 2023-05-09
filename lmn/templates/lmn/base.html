@@ -5,15 +5,34 @@
     <title>LMN</title>
     <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'css/base_style.css' %}" type="text/css">
+    {% comment %} found the  way to do this here: https://stackoverflow.com/questions/7462398/django-template-if-tag-based-on-current-url-value {% endcomment %}
+    {% if request.resolver_match.view_name == 'note_detail' %}
+      <meta property="og:title" content="{{note.title}}" />
+      <meta property="og:type" content="website" />
+      {% if note.pk %}<meta property="og:url" content="{% url 'note_detail' note.pk %}" />{% endif %}
+      <meta property="og:image" content="{% if note.photo %}http://{{ request.get_host }}{{note.photo.url}} {% endif %}" />
+      <meta property="og:description" content="{{note.show.artist.name}} played at {{note.show.venue.name}} at {{note.show.show_date}} and {{note.user.username}} gave it a rating of {{note.rating}}/5 added a note, View it by clicking on this link!" />
+      <meta name="twitter:card" content="summary_large_image">
+
+    {% else %}
+
+    {% endif %}
   </head>
 
   <body>
 
-    <h1>LMN</h1>
+
+    <script>
+      document.cookie = "timezone_offset=" + new Date().getTimezoneOffset();
+    </script>
+
+    <h1 id="site-header">LMN</h1>
+
 
     <a href="{% url 'venue_list' %}">Venues</a>
     <a href="{% url 'artist_list' %}">Artists</a>
     <a href="{% url 'latest_notes' %}">Notes</a>
+    <a href="{% url 'show_list' %}">Shows</a>
 
     {% if user.is_authenticated %}
 

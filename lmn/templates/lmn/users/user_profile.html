@@ -12,6 +12,17 @@
 
   -->
 
+  {% if user_profile.pk == user.pk %}
+    <form action="{% url 'user_profile' user_pk=user.pk %}">
+      {{ form }}
+      <input type="submit" value="Search">
+    </form>
+  {% endif %}
+
+  {% if search_term %}
+    <h2>Notes matching '{{ search_term }}' <a href="{% url 'user_profile' user_pk=user.pk %}">(clear)</a></h2>
+  {% endif %}
+
   <h2 id="username-notes">{{ user_profile.username }}'s notes</h2>
 
   {% for note in notes %}

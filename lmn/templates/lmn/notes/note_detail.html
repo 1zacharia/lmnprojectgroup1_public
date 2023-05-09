@@ -8,6 +8,7 @@
 
   <p id="note-title"><b>{{ note.title}}</b></p>
   <p id="note-text">{{ note.text }}</p>
+  
   <p>Rating: {{ note.rating }}/5</p>
 
   {% if note.photo %}
@@ -15,4 +16,22 @@
   {% else %}
     <p>No Photo</p>
   {% endif %}
+  <div>
+    <p>Share on social networks:</p>
+    <!-- got these from https://schier.co/blog/pure-html-share-buttons -->
+    <!-- Twitter (url, text, @mention) -->
+    <a target="_blank"  class="share-btn twitter" href="https://twitter.com/share?url={{ request.build_absolute_uri }}&text={{ note.show }}%0A{{ note.title }}%0A{{ note.text }}">
+      Twitter
+    </a>
+
+    <!-- Facebook (url) -->
+    <a target="_blank"  class="share-btn facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">
+      Facebook
+    </a>
+
+    <!-- Reddit (url, title) -->
+    <a target="_blank"  class="share-btn reddit" href="https://reddit.com/submit?url={{ request.build_absolute_uri }}&title={{ note.title }}">
+      Reddit
+    </a>
+  </div>
 {% endblock %}

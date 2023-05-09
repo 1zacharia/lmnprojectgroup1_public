@@ -4,7 +4,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from ..models import Note, Show
-from ..forms import NewNoteForm 
+from ..forms import NewNoteForm
+
+from datetime import timedelta
 
 
 @login_required
@@ -30,6 +32,7 @@ def new_note(request, show_pk):
 def latest_notes(request):
     """ Get the 20 most recent notes, ordered with most recent first. """
     notes = Note.objects.all().order_by('-posted_date')[:20]   # slice of the 20 most recent notes
+    notes = adjust_datetime(request, notes)
     return render(request, 'lmn/notes/note_list.html', {'notes': notes, 'title': 'Latest Notes'})
 
 
@@ -37,6 +40,7 @@ def notes_for_show(request, show_pk):
     """ Get notes for one show, most recent first. """
     show = get_object_or_404(Show, pk=show_pk)  
     notes = Note.objects.filter(show=show_pk).order_by('-posted_date')
+    notes = adjust_datetime(request, notes)
     return render(request, 'lmn/notes/notes_for_show.html', {'show': show, 'notes': notes})
 
 
@@ -44,3 +48,11 @@ def note_detail(request, note_pk):
     """ Display one note. """
     note = get_object_or_404(Note, pk=note_pk)
     return render(request, 'lmn/notes/note_detail.html', {'note': note})
+
+
+# Adjust posted_date to fit timezone
+def adjust_datetime(request, notes):
+    offset = int(request.COOKIES.get('timezone_offset', 0))
+    for note in notes:
+        note.posted_date -= timedelta(minutes=offset)
+    return notes

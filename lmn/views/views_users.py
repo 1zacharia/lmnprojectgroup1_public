@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
-from ..forms import UserRegistrationForm
+from ..forms import UserRegistrationForm, NoteSearchForm
 from ..models import Note
 
 
@@ -12,9 +12,15 @@ def user_profile(request, user_pk):
     """ Get user profile for any user on the site. 
     Any user may view any other user's profile. 
     """
+    form = NoteSearchForm
+    search_title = request.GET.get('search_title')
+    
     user = User.objects.get(pk=user_pk)
     usernotes = Note.objects.filter(user=user.pk).order_by('-posted_date')
-    return render(request, 'lmn/users/user_profile.html', {'user_profile': user, 'notes': usernotes})
+
+    if search_title:
+        usernotes = Note.objects.filter(user=user.pk, title__icontains=search_title).order_by('-posted_date')
+    return render(request, 'lmn/users/user_profile.html', {'user_profile': user, 'notes': usernotes, 'form': form, 'search_term': search_title})
 
 
 @login_required

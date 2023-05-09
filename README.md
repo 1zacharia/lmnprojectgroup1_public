@@ -19,6 +19,19 @@ Site at
 http://127.0.0.1:8000
 
 
+### Get API keys
+Use the links bellow to get the required API keys
+
+Ticketmaster API- https://developer.ticketmaster.com/products-and-docs/apis/getting-started/
+
+
+### Create a .env file with your API keys
+Create a .env file and put it in your root directory.
+In the .env insert the following-
+
+export TICKETMASTER_KEY='INSERT YOUR TICKETMASTER KEY HERE'
+
+
 ### Create superuser
 
 ```

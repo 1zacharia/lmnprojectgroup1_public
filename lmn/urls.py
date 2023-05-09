@@ -1,7 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-
-from .views import views_main, views_artists, views_venues, views_notes, views_users
+from .views import views_main, views_artists, views_venues, views_notes, views_users, views_shows, views_logout
 
 
 urlpatterns = [
@@ -28,9 +27,14 @@ urlpatterns = [
     path('user/profile/<int:user_pk>/', views_users.user_profile, name='user_profile'),
     path('user/profile/', views_users.my_user_profile, name='my_user_profile'),
 
+
+
     # Account related URLs
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('accounts/logout/', views_logout.CustomLogoutView.as_view(), name="logout"),
     path('register/', views_users.register, name='register'),
 
+    # Show related URLs
+    path('shows/', views_shows.show_list, name='show_list')
+    
 ]

@@ -2,8 +2,17 @@
 
 {% block content %}
 
-  <p>Welcome to Live Music Notes, LMN</p>
-  <p>Soon to be LMNOP</p>
-  <p>Use the links above to navigate</p>
+<div class="message">
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+<p>Welcome to Live Music Notes, LMN</p>
+<p>Soon to be LMNOP</p>
+<p>Use the links above to navigate</p>
 
 {% endblock %}
